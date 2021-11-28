@@ -1,0 +1,169 @@
+$sidebar-color: #EBEBEB;
+$text-color-primary: #3B3B3B;
+$text-color-secondary: #222222;
+$text-color-tertiary: #666666;
+$link-color: #15C;
+
+$text-default: 20px;
+$text-display: 24px;
+$text-aside: 16px;
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url('/assets/font/RobotoSlab-Regular.eot');
+  src: url('/assets/font/RobotoSlab-Regular.eot?#iefix') format('embedded-opentype'),
+       url('/assets/font/RobotoSlab-Regular.woff2') format('woff2'),
+       url('/assets/font/RobotoSlab-Regular.woff') format('woff'),
+       url('/assets/font/RobotoSlab-Regular.svg#RobotoSlab-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url('/assets/font/RobotoSlab-Bold.eot');
+  src: url('/assets/font/RobotoSlab-Bold.eot?#iefix') format('embedded-opentype'),
+       url('/assets/font/RobotoSlab-Bold.woff2') format('woff2'),
+       url('/assets/font/RobotoSlab-Bold.woff') format('woff'),
+       url('/assets/font/RobotoSlab-Bold.svg#RobotoSlab-Bold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto Slab", serif;
+  font-size: $text-default;
+  color: $text-color-primary;
+}
+
+.display {
+  font-size: $text-display;
+  color: $text-color-secondary;
+  font-weight: bold;
+}
+
+.aside {
+  font-size: $text-aside;
+  color: $text-color-tertiary;
+
+  &--normal {
+    font-size: $text-default;
+  }
+
+  &--bold {
+    font-weight: bold;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: $link-color;
+
+  &:hover {
+    background-color: $link-color;
+    color: white;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  & li {
+    display: block;
+  }
+}
+
+.header {
+  width: 364px;
+  height: 100vh;
+  background-color: $sidebar-color;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 40px 30px;
+
+  &__legend {
+    &__logo {
+      display: block;
+      color: transparent;
+      background-color: transparent;
+
+      &:hover {
+        color: transparent;
+        background-color: transparent;
+      }
+
+      & div {
+        margin-top: 5px;
+      }
+    }
+
+    & p {
+      margin: 0;
+    }
+  }
+}
+
+.nav-main {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin: 30px 0;
+
+  & a {
+    margin-bottom: 15px;
+
+    &.active {
+      color: white;
+      background-color: $link-color;
+    }
+  }
+}
+
+.copyright-material {
+  font-size: $text-aside;
+  margin-top: calc(100vh - 666px);
+}
+
+.container {
+  width: 700px;
+  margin: 30px 50px 50px 414px;
+
+  &__latest {
+    & ul {
+      margin: 20px 0;
+
+      & li {
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        & span:first-child {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+
+  &--blog {
+    & li {
+      margin: 10px 0;
+    }
+  }
+}
