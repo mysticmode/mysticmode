@@ -137,7 +137,6 @@ ul {
 
 .copyright-material {
   font-size: $text-aside;
-  margin-top: calc(100% / 1.5);
 }
 
 .container {
@@ -203,6 +202,69 @@ ul {
         &:hover {
           background-color: transparent;
           color: transparent;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1270px) {
+  .header {
+    position: static;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 400px;
+    padding: 20px;
+
+    &__legend {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .nav-main {
+    flex-direction: row;
+    margin: 20px auto;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    & a {
+      margin-right: 25px;
+    }
+  }
+
+  .copyright-material {
+    text-align: center;
+    width: 80%;
+  }
+
+  .container {
+    margin: 30px auto 50px;
+    padding: 0 20px;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .header {
+    height: 540px;
+  }
+
+  .copyright-material {
+    width: 100%;
+  }
+
+  .container {
+    &__latest, &--blog, &--poems {
+      & ul > li {
+        flex-direction: column;
+        margin-bottom: 30px;
+
+        & span:last-child {
+          margin-left: 0;
         }
       }
     }
