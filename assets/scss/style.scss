@@ -168,7 +168,7 @@ ul {
     }
   }
 
-  &--blog, &--poems {
+  &--blog, &--poems, &--feeds {
     & ul {
       margin: 20px 0;
     }
@@ -255,7 +255,7 @@ ul {
   }
 
   .container {
-    &__latest, &--blog, &--poems {
+    &__latest, &--blog, &--poems, &--feeds {
       & ul > li {
         flex-direction: column;
         margin-bottom: 30px;
