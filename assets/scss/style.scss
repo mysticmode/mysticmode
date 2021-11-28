@@ -227,14 +227,11 @@ ul {
 
   .nav-main {
     flex-direction: row;
-    margin: 20px auto;
+    margin: 20px 0;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: center;
-
-    & a {
-      margin-right: 25px;
-    }
+    justify-content: space-evenly;
+    width: 680px;
   }
 
   .copyright-material {
@@ -250,11 +247,11 @@ ul {
 
 @media only screen and (max-width: 680px) {
   .header {
-    height: 540px;
+    height: 520px;
   }
 
-  .copyright-material {
-    width: 100%;
+  .nav-main, .copyright-material {
+    width: 320px;
   }
 
   .container {
