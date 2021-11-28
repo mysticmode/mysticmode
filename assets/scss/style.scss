@@ -148,6 +148,7 @@ ul {
       margin: 20px 0;
 
       & li {
+        display: flex;
         margin-bottom: 10px;
 
         &:last-child {
@@ -155,18 +156,25 @@ ul {
         }
 
         & span:first-child {
-          margin-right: 20px;
+          width: 120px;
+          margin-right: 10px;
+        }
+
+        & span:last-child {
+          margin-left: 10px;
         }
       }
     }
   }
 
-  &--blog {
+  &--blog, &--poems {
     & li {
+      display: flex;
       margin: 10px 0;
 
       & span:first-child {
-        margin-right: 20px;
+        width: 120px;
+        margin-right: 10px;
       }
     }
   }
