@@ -146,6 +146,7 @@ ul {
 
   &__latest {
     & ul {
+      display: block;
       margin: 20px 0;
 
       & li {
@@ -169,13 +170,40 @@ ul {
   }
 
   &--blog, &--poems {
+    & ul {
+      margin: 20px 0;
+    }
+
     & li {
       display: flex;
-      margin: 10px 0;
+      margin-bottom: 10px;
 
       & span:first-child {
         width: 120px;
         margin-right: 10px;
+      }
+    }
+  }
+
+  &--art {
+    max-width: 55rem;
+
+    & ul {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    & li {
+      margin-bottom: 40px;
+      margin-right: 20px;
+
+      & a {
+        display: block;
+        &:hover {
+          background-color: transparent;
+          color: transparent;
+        }
       }
     }
   }
