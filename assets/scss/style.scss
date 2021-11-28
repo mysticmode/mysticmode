@@ -46,6 +46,7 @@ body {
   font-family: "Roboto Slab", serif;
   font-size: $text-default;
   color: $text-color-primary;
+  line-height: 1.7rem;
 }
 
 .display {
@@ -88,7 +89,7 @@ ul {
 }
 
 .header {
-  width: 364px;
+  width: calc(100% / 5);
   height: 100vh;
   background-color: $sidebar-color;
   position: fixed;
@@ -136,12 +137,12 @@ ul {
 
 .copyright-material {
   font-size: $text-aside;
-  margin-top: calc(100vh - 666px);
+  margin-top: calc(100% / 1.5);
 }
 
 .container {
-  width: 700px;
-  margin: 30px 50px 50px 414px;
+  max-width: 50rem;
+  margin: 30px 50px 50px calc(calc(100% / 5) + 3.6rem);
 
   &__latest {
     & ul {
