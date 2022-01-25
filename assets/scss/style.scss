@@ -95,7 +95,8 @@ ul {
   position: fixed;
   top: 0;
   left: 0;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
+  overflow-y: auto;
 
   &__legend {
     &__me {
@@ -122,6 +123,7 @@ ul {
     }
 
     & p {
+      font-size: 18px;
       margin: 0;
       padding: 0 20px;
     }
@@ -226,13 +228,22 @@ ul {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 400px;
+    height: 550px;
     padding: 20px;
 
     &__legend {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: baseline;
+
+      &__me {
+        width: 280px;
+        height: 280px;
+      }
+
+      & div, & p {
+        padding: 0;
+      }
     }
   }
 
@@ -256,13 +267,23 @@ ul {
   }
 }
 
-@media only screen and (max-width: 680px) {
+@media only screen and (max-width: 920px) {
   .header {
-    height: 520px;
+    height: 85%;
   }
 
   .nav-main, .copyright-material {
-    width: 320px;
+    width: 80%;
+  }
+
+  .nav-main {
+    & a {
+      margin-right: 20px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   .container {
