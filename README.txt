@@ -15,7 +15,7 @@ degrees of software development.
 Favorites?
 -----
 
-  - Choose one favorite YouTube channel? - [Buddha's Lounge](https://www.youtube.com/c/BuddhasLounge)
-  - Choose one favorite poet? - [RUMI](https://en.wikipedia.org/wiki/Rumi)
+  - Choose one favorite YouTube channel? - Buddha's Lounge => https://www.youtube.com/c/BuddhasLounge)
+  - Choose one favorite poet? - RUMI => https://en.wikipedia.org/wiki/Rumi)
   - Choose one favorite quote from him? - Very hard! But --> "What you seek is seeking for you"
   - Choose one favorite hobby of yours? - Meaningful conversation with people
