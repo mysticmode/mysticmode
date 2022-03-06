@@ -95,6 +95,9 @@ ul {
   position: fixed;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   padding-bottom: 30px;
   overflow-y: auto;
 
@@ -221,20 +224,20 @@ ul {
   }
 }
 
-@media only screen and (max-width: 1270px) {
+@media only screen and (max-width: 1080px) {
   .header {
     position: static;
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 550px;
+    height: 85%;
     padding: 20px;
 
     &__legend {
       display: flex;
       flex-direction: column;
-      align-items: baseline;
+      align-items: center;
 
       &__me {
         width: 280px;
@@ -268,10 +271,6 @@ ul {
 }
 
 @media only screen and (max-width: 920px) {
-  .header {
-    height: 85%;
-  }
-
   .nav-main, .copyright-material {
     width: 80%;
   }
