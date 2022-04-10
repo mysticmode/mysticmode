@@ -1,0 +1,8 @@
+[blog]
+2021-11-28_hello-from-mysticmode.txt
+2020-11-10_about-annamalai-swami.txt
+
+[poems]
+2022-01-25_dont-just-get-going.txt
+2021-08-12_life-is-preciously-short.txt
+2014-09-09_solitude.txt

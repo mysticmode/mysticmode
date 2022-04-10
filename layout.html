@@ -1,3 +1,4 @@
+{{define "layout"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +12,7 @@
 </head>
 
 <body>
+
   <header class="header">
     <div class="header__legend">
       <a href="/" class="header__legend__logo">
@@ -31,28 +33,14 @@
       free/libre copyleft license (GPL or CC BY-SA). Read the notice about the <a href="/license">license and
         resources</a>.</div>
   </header>
+
   <main class="container container--blog">
-    <div class="display">Hello from mysticmode</div>
-    <span class="aside">2021-11-28</span>
-    <p>
-      While I'm writing this, I have a new found feeling that I'm going to share
-      some experience and make a thoughtful impact for the readers. And as well,
-      leave something worthwhile behind which might not vanish across time. I hope,
-      this thought from me and this resource persists.
-    </p>
-    <p>
-      Here, I'm going to write whatever thoughts, feelings and information that I
-      could be able to put it into words. This just doesn't stick around that, I mean
-      the spiritual aspects of me. But also, I'll be sharing some technical articles
-      and tutorials that I learn. After all, my profession is writing softwares.
-    </p>
-    <p>
-      So, stay in touch by subscribing via RSS feeds. Also, feel free to contact me via email --
-      touch [at] mysticmode [dot] net.
-    </p>
-    <p>Much love to you -- Nirmal.</p>
-    </div>
+    <div class="display">{{.Title}}</div>
+    <span class="aside">{{.Date}}</span>
+    <div>{{.Content}}</div>
   </main>
+
 </body>
 
 </html>
+{{end}}
