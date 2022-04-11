@@ -86,7 +86,7 @@ func triggerLoader() {
 // using for /blog/post1 and poems/poem1
 func postHandler(w http.ResponseWriter, r *http.Request) {
 	reqPath = r.URL.Path
-	if reqPath == "" || reqPath == "/blog/" || reqPath == "/poems/" || r.Method != http.MethodGet {
+	if reqPath == "" || strings.HasSuffix(reqPath, "/") || r.Method != http.MethodGet {
 		http.NotFound(w, r)
 		return
 	}
