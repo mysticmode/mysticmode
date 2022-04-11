@@ -85,12 +85,12 @@ func triggerLoader() {
 // postHandler serves dynamic .txt posts and currently
 // using for /blog/post1 and poems/poem1
 func postHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "" || r.Method != http.MethodGet {
+	reqPath = r.URL.Path
+	if reqPath == "" || reqPath == "/blog/" || reqPath == "/poems/" || r.Method != http.MethodGet {
 		http.NotFound(w, r)
 		return
 	}
 
-	reqPath = r.URL.Path
 	actPath = fmt.Sprintf(".%s.txt", reqPath)
 
 	content, err := os.ReadFile(actPath)
@@ -140,14 +140,22 @@ func htmlFileHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
 		http.ServeFile(w, r, "index.html")
+		return
 	case "/license":
 		http.ServeFile(w, r, "license.html")
+		return
 	case "/blog":
 		http.ServeFile(w, r, "./blog/index.html")
+		return
 	case "/poems":
 		http.ServeFile(w, r, "./poems/index.html")
+		return
 	case "/art":
 		http.ServeFile(w, r, "./art/index.html")
+		return
+	default:
+		http.NotFound(w, r)
+		return
 	}
 }
 
