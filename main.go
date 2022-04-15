@@ -102,8 +102,8 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 
 	sFront := strings.Split(string(content), "\n")[0:3]
 
-	sTitle := strings.Split(sFront[0], "->")[1]
-	sDate := strings.Split(sFront[1], "->")[1]
+	sTitle := sFront[0]
+	sDate := sFront[1]
 
 	sContent := strings.Split(string(content), "\n")[3:]
 	article := strings.Join(sContent, "<br>")

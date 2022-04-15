@@ -1,6 +1,5 @@
--> Hello from mysticmode
--> 2021-11-28
------
+Hello from mysticmode
+2021-11-28
 
 While I'm writing this, I have a new found feeling that I'm going to share
 some experience and make a thoughtful impact for the readers. And as well,
