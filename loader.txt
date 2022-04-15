@@ -5,7 +5,7 @@ port=4000
 [layout]
 layout.html
 
-[blog]
+[archive]
 2021-11-28_hello-from-mysticmode.txt
 2020-11-10_about-annamalai-swami.txt
 

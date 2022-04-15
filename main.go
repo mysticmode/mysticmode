@@ -13,14 +13,12 @@ import (
 
 var (
 	host, port, layout, reqPath, actPath string
-	blog, poems                          []string
+	archive, poems                       []string
 )
 
 // postAttr contains template tags
 type postAttr struct {
-	Title   string
-	Date    string
-	Content string
+	Title, Date, Banner, Content string
 }
 
 // runHTTP runs the server on the given listen address
@@ -63,12 +61,12 @@ func triggerLoader() {
 				port = strings.Split(cfg[1], "=")[1]
 			case "[layout]":
 				layout = configLines[i+1]
-			case "[blog]":
+			case "[archive]":
 				for v := i + 1; v < len(configLines); v++ {
 					if strings.HasPrefix(configLines[v], "[") || configLines[v] == "" {
 						break
 					}
-					blog = append(blog, configLines[v])
+					archive = append(archive, configLines[v])
 				}
 			case "[poems]":
 				for v := i + 1; v < len(configLines); v++ {
@@ -83,7 +81,7 @@ func triggerLoader() {
 }
 
 // postHandler serves dynamic .txt posts and currently
-// using for /blog/post1 and poems/poem1
+// using for /archive/post1 and poems/poem1
 func postHandler(w http.ResponseWriter, r *http.Request) {
 	reqPath = r.URL.Path
 	if reqPath == "" || strings.HasSuffix(reqPath, "/") || r.Method != http.MethodGet {
@@ -100,18 +98,25 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sFront := strings.Split(string(content), "\n")[0:3]
+	sFront := strings.Split(string(content), "\n")[:3]
 
 	sTitle := sFront[0]
 	sDate := sFront[1]
 
 	sContent := strings.Split(string(content), "\n")[3:]
-	article := strings.Join(sContent, "<br>")
+
+	var banner string
+	banner = strings.Join(sContent[:2], "<br>")
+	if !strings.HasPrefix(banner, "<img") {
+		banner = ""
+	}
+	article := strings.Join(sContent[2:], "")
 
 	pT := postAttr{
 		Title:   sTitle,
 		Date:    sDate,
 		Content: article,
+		Banner:  banner,
 	}
 
 	tmpl, err := template.ParseFiles(layout)
@@ -141,11 +146,11 @@ func htmlFileHandler(w http.ResponseWriter, r *http.Request) {
 	case "/":
 		http.ServeFile(w, r, "index.html")
 		return
-	case "/license":
-		http.ServeFile(w, r, "license.html")
-		return
-	case "/blog":
-		http.ServeFile(w, r, "./blog/index.html")
+	// case "/license":
+	// 	http.ServeFile(w, r, "license.html")
+	// 	return
+	case "/archive":
+		http.ServeFile(w, r, "./archive/index.html")
 		return
 	case "/poems":
 		http.ServeFile(w, r, "./poems/index.html")
@@ -166,8 +171,8 @@ func newRouter() http.Handler {
 	mux.HandleFunc("/", htmlFileHandler)
 	mux.HandleFunc("/license", htmlFileHandler)
 	mux.HandleFunc("/art", htmlFileHandler)
-	mux.HandleFunc("/blog", htmlFileHandler)
-	mux.HandleFunc("/blog/", postHandler)
+	mux.HandleFunc("/archive", htmlFileHandler)
+	mux.HandleFunc("/archive/", postHandler)
 	mux.HandleFunc("/poems", htmlFileHandler)
 	mux.HandleFunc("/poems/", postHandler)
 
