@@ -154,17 +154,11 @@ func htmlFileHandler(w http.ResponseWriter, r *http.Request) {
 	case "/":
 		http.ServeFile(w, r, "index.html")
 		return
-	// case "/license":
-	// 	http.ServeFile(w, r, "license.html")
-	// 	return
 	case "/archive":
 		http.ServeFile(w, r, "./archive/index.html")
 		return
 	case "/poems":
 		http.ServeFile(w, r, "./poems/index.html")
-		return
-	case "/art":
-		http.ServeFile(w, r, "./art/index.html")
 		return
 	default:
 		http.NotFound(w, r)
