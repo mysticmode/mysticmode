@@ -19,6 +19,7 @@ var (
 // postAttr contains template tags
 type postAttr struct {
 	Title, Date, Banner, Content string
+	IsArchive, IsPoems           bool
 }
 
 // runHTTP runs the server on the given listen address
@@ -83,10 +84,19 @@ func triggerLoader() {
 // postHandler serves dynamic .txt posts and currently
 // using for /archive/post1 and poems/poem1
 func postHandler(w http.ResponseWriter, r *http.Request) {
+	var pT postAttr
 	reqPath = r.URL.Path
 	if reqPath == "" || strings.HasSuffix(reqPath, "/") || r.Method != http.MethodGet {
 		http.NotFound(w, r)
 		return
+	}
+
+	if strings.Split(reqPath, "/")[1] == "archive" {
+		pT.IsArchive = true
+	}
+
+	if strings.Split(reqPath, "/")[1] == "poems" {
+		pT.IsPoems = true
 	}
 
 	actPath = fmt.Sprintf(".%s.txt", reqPath)
@@ -112,12 +122,10 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	article := strings.Join(sContent[2:], "")
 
-	pT := postAttr{
-		Title:   sTitle,
-		Date:    sDate,
-		Content: article,
-		Banner:  banner,
-	}
+	pT.Title = sTitle
+	pT.Date = sDate
+	pT.Content = article
+	pT.Banner = banner
 
 	tmpl, err := template.ParseFiles(layout)
 	if err != nil {

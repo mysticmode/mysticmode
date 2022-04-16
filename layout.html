@@ -14,9 +14,9 @@
 
   <nav>
     <a href="/">home</a>
-    <a href="/archive">archive</a>
+    <a href="/archive" {{if .IsArchive}} class="active" {{end}}>archive</a>
     <a href="https://sr.ht/~mysticmode/">code</a>
-    <a href="/poems">poems</a>
+    <a href="/poems" {{if .IsPoems}} class="active" {{end}}>poems</a>
   </nav>
 
   <main>
