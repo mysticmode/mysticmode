@@ -1,9 +1,8 @@
 Short intro:
 -----
 
-Not an extremist in any sense, but I'd mostly tend to work on "Free" and
-open-source softwares. One of the main aspects of "Free" and open-source 
-softwares that indulge me in, is that the source code and the project that
+I'd mostly tend to work on "Free" (or) open-source softwares. One of the main aspects 
+of "Free" and open-source softwares that indulge me in, is that the source code and the project that
 you build could last more time than you think. Reason is that the source code is
 readable by anyone, hence it could be managed by others forward if they find the
 need to keep it going. The other aspect is that educational, since I work alone
