@@ -7,8 +7,11 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/yuin/goldmark"
 )
 
 var (
@@ -141,14 +144,47 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type formValue struct {
+	title, year, month, day, content string
+}
+
+func submitPost(w http.ResponseWriter, r *http.Request) {
+	fV := formValue{
+		title:   r.FormValue("title"),
+		year:    r.FormValue("year"),
+		month:   r.FormValue("month"),
+		day:     r.FormValue("day"),
+		content: r.FormValue("content"),
+	}
+
+	tS := strings.ReplaceAll(fV.title, " ", "-")
+
+	fileName := fmt.Sprintf("%s-%s-%s_%s", fV.year, fV.month, fV.day, tS)
+
+	fO, err := os.Create(filepath.Join("archive", fileName))
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		if err := fO.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	bW := bufio.NewWriter(fO)
+	if err := goldmark.Convert([]byte(fV.content), bW); err != nil {
+		panic(err)
+	}
+}
+
 // htmlFileHandler serves HTML files directly without
 // any manipulation and currently using index.html pages
 // in the project root and categories.
 func htmlFileHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.NotFound(w, r)
-		return
-	}
+	// if r.Method != http.MethodGet {
+	// 	http.NotFound(w, r)
+	// 	return
+	// }
 
 	switch r.URL.Path {
 	case "/":
@@ -159,6 +195,13 @@ func htmlFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	case "/poems":
 		http.ServeFile(w, r, "./poems/index.html")
+		return
+	case "/write":
+		if r.Method == http.MethodPost {
+			submitPost(w, r)
+			return
+		}
+		http.ServeFile(w, r, "write.html")
 		return
 	default:
 		http.NotFound(w, r)
@@ -177,6 +220,7 @@ func newRouter() http.Handler {
 	mux.HandleFunc("/archive/", postHandler)
 	mux.HandleFunc("/poems", htmlFileHandler)
 	mux.HandleFunc("/poems/", postHandler)
+	mux.HandleFunc("/write", htmlFileHandler)
 
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 
