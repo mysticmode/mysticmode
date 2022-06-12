@@ -52,6 +52,7 @@ nav > a {
 }
 
 main {
+  width: 100%;
   margin-left: 30px;
 }
 
@@ -59,12 +60,8 @@ main > h3 {
   margin: 0 0 20px;
 }
 
-main > div:first-child > img {
-  margin-bottom: 20px;
-}
-
-main > img:first-child {
-  margin-bottom: 20px;
+main > div > p > img {
+  width: 100%;
 }
 
 main > nav {
@@ -130,9 +127,9 @@ body.write > main > form > textarea {
   outline: none;
 }
 
-body.write > main > form > .date {
+body.write > main > form > .date, body.write > main > form > .type {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   margin: 2% auto;
 }
@@ -146,6 +143,16 @@ body.write > main > form > .date > input[type="text"] {
 
 body.write > main > form > .date > input[type="text"]:last-child {
   margin-right: 0;
+}
+
+body.write > main > form > .type > input[type="radio"] {
+  display: block;
+  margin-left: 1.5%;
+  margin-right: 4px;
+}
+
+body.write > main > form > .type > input[type="radio"]:first-child {
+  margin-left: 0;
 }
 
 body.write > main > form > input[type="submit"] {

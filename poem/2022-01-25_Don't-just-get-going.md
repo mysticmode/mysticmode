@@ -1,0 +1,5 @@
+Don't just get going
+2022-01-25
+Don’t just get going for the ones that are only trivial for survival;\
+Persist with patience and get what you are truly seeking for;\
+Because by all means, the universe will work upon you to achieve what you want by heart.

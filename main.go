@@ -3,27 +3,21 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"html/template"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	"github.com/yuin/goldmark"
 )
 
-var (
-	host, port, layout, reqPath, actPath string
-	archive, poems                       []string
-)
-
-// postAttr contains template tags
-type postAttr struct {
-	Title, Date, Banner, Content string
-	IsArchive, IsPoems           bool
-}
+const poemHTMLTop = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>mysticmode - All my public musing</title><link rel="stylesheet" href="/assets/css/style.css"></head><body><nav><a href="/">home</a><a href="/archive">archive</a><a href="https://github.com/mysticmode">code</a><a href="/poem" class="active">poems</a></nav><main>`
+const archiveHTMLTop = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>mysticmode - All my public musing</title><link rel="stylesheet" href="/assets/css/style.css"></head><body><nav><a href="/">home</a><a href="/archive" class="active">archive</a><a href="https://github.com/mysticmode">code</a><a href="/poem">poems</a></nav><main>`
+const htmlBottom = `</main></body></html>`
 
 // runHTTP runs the server on the given listen address
 // and sets the routing handlers
@@ -37,199 +31,200 @@ func runHTTP(listenAddr string) error {
 	return s.ListenAndServe()
 }
 
-// triggerLoader loads the config from
-// loader.txt file in the project root directory
-func triggerLoader() {
-	f, err := os.Open("loader.txt")
-	if err != nil {
-		log.Fatal("failed to open config file")
-	}
-
-	scanner := bufio.NewScanner(f)
-	scanner.Split(bufio.ScanLines)
-	var configLines []string
-
-	for scanner.Scan() {
-		configLines = append(configLines, scanner.Text())
-	}
-
-	f.Close()
-
-	for i, line := range configLines {
-		if strings.HasPrefix(line, "[") {
-			switch line {
-			case "[config]":
-				var cfg []string
-				cfg = append(cfg, configLines[i+1:3]...)
-				host = strings.Split(cfg[0], "=")[1]
-				port = strings.Split(cfg[1], "=")[1]
-			case "[layout]":
-				layout = configLines[i+1]
-			case "[archive]":
-				for v := i + 1; v < len(configLines); v++ {
-					if strings.HasPrefix(configLines[v], "[") || configLines[v] == "" {
-						break
-					}
-					archive = append(archive, configLines[v])
-				}
-			case "[poems]":
-				for v := i + 1; v < len(configLines); v++ {
-					if strings.HasPrefix(configLines[v], "[") || configLines[v] == "" {
-						break
-					}
-					poems = append(poems, configLines[v])
-				}
-			}
-		}
-	}
+type IndexAttribute struct {
+	Year string
+	Post map[string]string // map[link]title
 }
 
-// postHandler serves dynamic .txt posts and currently
-// using for /archive/post1 and poems/poem1
-func postHandler(w http.ResponseWriter, r *http.Request) {
-	var pT postAttr
-	reqPath = r.URL.Path
-	if reqPath == "" || strings.HasSuffix(reqPath, "/") || r.Method != http.MethodGet {
-		http.NotFound(w, r)
-		return
-	}
+func genIndex(dirName string) {
+	var postIndex []IndexAttribute
+	var iA IndexAttribute
 
-	if strings.Split(reqPath, "/")[1] == "archive" {
-		pT.IsArchive = true
-	}
-
-	if strings.Split(reqPath, "/")[1] == "poems" {
-		pT.IsPoems = true
-	}
-
-	actPath = fmt.Sprintf(".%s.txt", reqPath)
-
-	content, err := os.ReadFile(actPath)
+	files, err := ioutil.ReadDir(dirName)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-		return
+		log.Fatal(err)
 	}
 
-	sFront := strings.Split(string(content), "\n")[:3]
+	for i := 0; i < len(files); i++ {
+		fN := files[i].Name()
 
-	sTitle := sFront[0]
-	sDate := sFront[1]
+		// filename format => YYYY-MM-DD_post-title.html
+		fY := strings.Split(strings.Split(fN, "_")[0], "-")[0]
+		fO, err := os.OpenFile(filepath.Join(dirName, fN), os.O_RDONLY, os.ModePerm)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer func() {
+			if err := fO.Close(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
-	sContent := strings.Split(string(content), "\n")[3:]
+		var fT string
+		scanner := bufio.NewScanner(fO)
+		if scanner.Scan() {
+			fT = scanner.Text()
+		}
 
-	var banner string
-	banner = strings.Join(sContent[:2], "<br>")
-	if !strings.HasPrefix(banner, "<img") {
-		banner = ""
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err)
+		}
+
+		if fY == iA.Year {
+			iA.Post[fN] = fT
+		} else {
+			if iA.Post != nil {
+				postIndex = append(postIndex, iA)
+			}
+			iA = IndexAttribute{}
+			iA.Post = make(map[string]string)
+			iA.Year = fY
+			iA.Post[fN] = fT
+		}
 	}
-	article := strings.Join(sContent[2:], "")
 
-	pT.Title = sTitle
-	pT.Date = sDate
-	pT.Content = article
-	pT.Banner = banner
-
-	tmpl, err := template.ParseFiles(layout)
+	indexLayout, err := os.OpenFile(filepath.Join(dirName, "index.html"), os.O_RDONLY, os.ModePerm)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-		return
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := indexLayout.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	indexFile, err := os.OpenFile(filepath.Join("docs", dirName, "index.html"), os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := indexFile.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	tmpl, err := template.New("post-index").ParseFiles(indexLayout.Name())
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	err = tmpl.ExecuteTemplate(w, "layout", pT)
+	err = tmpl.Execute(indexFile, postIndex)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
+		log.Fatal(err)
 	}
+
+	fmt.Println(postIndex)
 }
 
 type formValue struct {
-	title, year, month, day, content string
+	title, year, month, day, content, postType string
 }
 
 func submitPost(w http.ResponseWriter, r *http.Request) {
 	fV := formValue{
-		title:   r.FormValue("title"),
-		year:    r.FormValue("year"),
-		month:   r.FormValue("month"),
-		day:     r.FormValue("day"),
-		content: r.FormValue("content"),
+		title:    r.FormValue("title"),
+		year:     r.FormValue("year"),
+		month:    r.FormValue("month"),
+		day:      r.FormValue("day"),
+		content:  r.FormValue("content"),
+		postType: r.FormValue("type"),
 	}
 
 	tS := strings.ReplaceAll(fV.title, " ", "-")
 
 	fileName := fmt.Sprintf("%s-%s-%s_%s", fV.year, fV.month, fV.day, tS)
 
-	fO, err := os.Create(filepath.Join("archive", fileName))
-	if err != nil {
-		panic(err)
+	var fO *os.File
+	var err error
+
+	if fV.postType == "poem" {
+		fO, err = os.Create(filepath.Join("poem", fileName+".md"))
+	} else {
+		fO, err = os.Create(filepath.Join("archive", fileName+".md"))
 	}
 	defer func() {
 		if err := fO.Close(); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}()
 
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	bW := bufio.NewWriter(fO)
-	if err := goldmark.Convert([]byte(fV.content), bW); err != nil {
-		panic(err)
+
+	// write post title as a first line
+	bW.Write([]byte(fmt.Sprintf("%s\n", fV.title)))
+
+	// write post date as a second line
+	bW.Write([]byte(fmt.Sprintf("%s-%s-%s\n", fV.year, fV.month, fV.day)))
+
+	bW.Write([]byte(fV.content))
+
+	bW.Flush()
+
+	var fAct *os.File
+	var htmlTop string
+
+	if fV.postType == "poem" {
+		htmlTop = poemHTMLTop
+		fAct, err = os.Create(filepath.Join("docs/poem", fileName+".html"))
+	} else {
+		htmlTop = archiveHTMLTop
+		fAct, err = os.Create(filepath.Join("docs/archive", fileName+".html"))
 	}
-}
-
-// htmlFileHandler serves HTML files directly without
-// any manipulation and currently using index.html pages
-// in the project root and categories.
-func htmlFileHandler(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodGet {
-	// 	http.NotFound(w, r)
-	// 	return
-	// }
-
-	switch r.URL.Path {
-	case "/":
-		http.ServeFile(w, r, "index.html")
-		return
-	case "/archive":
-		http.ServeFile(w, r, "./archive/index.html")
-		return
-	case "/poems":
-		http.ServeFile(w, r, "./poems/index.html")
-		return
-	case "/write":
-		if r.Method == http.MethodPost {
-			submitPost(w, r)
-			return
+	defer func() {
+		if err := fAct.Close(); err != nil {
+			log.Fatal(err)
 		}
-		http.ServeFile(w, r, "write.html")
-		return
-	default:
-		http.NotFound(w, r)
-		return
+	}()
+
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	bWAct := bufio.NewWriter(fAct)
+
+	bWAct.Write([]byte(htmlTop))
+	bWAct.Write([]byte(fmt.Sprintf("<h3>%s</h3>", fV.title)))
+	bWAct.Write([]byte(fmt.Sprintf("<span>%s-%s-%s</span>", fV.year, fV.month, fV.day)))
+	bWAct.Write([]byte("<div>"))
+
+	if err := goldmark.Convert([]byte(fV.content), bWAct); err != nil {
+		log.Fatal(err)
+	}
+
+	bWAct.Write([]byte("</div>"))
+	bWAct.Write([]byte(htmlBottom))
+
+	bWAct.Flush()
+
+	// go genIndex(fV.postType)
+
+	w.Write([]byte("Posted successfully!"))
 }
 
 // newRouter is a registry of routers
 func newRouter() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", htmlFileHandler)
-	mux.HandleFunc("/license", htmlFileHandler)
-	mux.HandleFunc("/art", htmlFileHandler)
-	mux.HandleFunc("/archive", htmlFileHandler)
-	mux.HandleFunc("/archive/", postHandler)
-	mux.HandleFunc("/poems", htmlFileHandler)
-	mux.HandleFunc("/poems/", postHandler)
-	mux.HandleFunc("/write", htmlFileHandler)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			submitPost(w, r)
+			return
+		}
 
-	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
+		http.ServeFile(w, r, "write.html")
+	})
+
+	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./docs/assets"))))
 
 	return mux
 }
 
 func main() {
-	triggerLoader()
-	addr := net.JoinHostPort(host, port)
+	addr := net.JoinHostPort("localhost", "4000")
 	if err := runHTTP(addr); err != nil {
 		log.Fatal(err)
 	}

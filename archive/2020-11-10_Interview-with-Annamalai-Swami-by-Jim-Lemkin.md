@@ -1,0 +1,52 @@
+Interview with Annamalai Swami by Jim Lemkin
+2020-11-10
+![Picture of Annamalai Swami while interviewing by Jim Lemkin](/assets/img/annamalai_swami.jpg "Annamalai Swami")
+
+[YouTube link](https://www.youtube.com/watch?v=Dbd85YItR-E)
+
+One of my friends whose name is Hari Krishnan had shared me this video
+today morning. Like me, he was interested in searching for the truth,
+or maybe we could say as a spiritual wellness. I told him that I had
+his final talks edited by David Godman as a book. He had come to notice
+this video interview on YouTube and he shared it with me. No doubts, I
+was delighted and thanked him.
+
+So, I just watched the whole video. What Annamalai Swami talks in this
+video is very simple. But maybe I could say, my mother tongue being
+Tamil could be a reason for this.
+
+What the interviewer and the interpreter could try to ask makes much
+more sense to me, they were trying to see and perceive what made a Jnani
+like Annamalai Swami could delve into the self and how did they continue
+to stay there in that state their whole life.
+
+Interviewer seems to be an American trying to perceive that how could
+we live such a life say for example living in New York or Los Angeles.
+Where people constantly looking for the other way which is an illusion.
+By which I mean, the materialistic life in this samsara.
+
+I was taught in an English medium school. And I came to be in touch with
+many people from western countries for the last 10 years by being in
+ashrams and traveling around. I particularly or firmly established myself
+in their way of thinking to achieve something which was - I need recognition
+from this world. That said, I don't want to say this is the fault of the
+westerners. This is of myself. Maybe I could say I was thinking I'm the
+mind and I'm the body as Annamalai Swami puts constantly in this video.
+
+Annamalai Swami asks, when you are in a deep sleep, do you know who you
+are? Then the conversation goes like this, we don’t - So, we are not the
+mind and we are not the body. Who else then? The Self which is known as
+Atman is a revered word in this philosophy. I cannot say it clearly
+because the irony is that – I'm like that interviewer who sometimes can
+feel that but it fades away because of this society that we are living in.</p>
+<p>He puts this question to Swami multiple times in various ways. But Swami
+just says that who is that person who is asking that question? It is the
+Self that is real, you are not the body neither the mind.
+
+One more important question regarding the point I’ve mentioned above which is
+fading away, Swami says that constant inquiry is Jnana which resonates with
+me deeply.
+
+It seems like reading, watching and understanding is all few percentages
+but the thing is we need to stay there and inquire ourselves the question
+that Swami says.
