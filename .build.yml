@@ -6,7 +6,7 @@ environment:
   site: mysticmode.srht.site
 tasks:
 - package: |
-    cd $site
+    cd $site/src
     tar -cvz . > ../site.tar.gz
 - upload: |
     hut pages publish -d $site site.tar.gz
