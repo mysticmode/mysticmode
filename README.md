@@ -15,7 +15,7 @@ not only being an useful utility but also to be a fun utility to do something th
 matter if the crowd likes it or not.
 
 So, now - I'm quite interested in knowing the Fundamentals of Computer Science and I'm learning C and Assembly
-coding. Adding some spicy to it, mathematics which had been a mystery to me my whole life thus far. But I'm
+coding. Adding some spices to it, mathematics which had been a mystery to me my whole life thus far. But I'm
 taking baby-steps here to learn linear algebra and calculus.
 
 ### Get in touch
