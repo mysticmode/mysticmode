@@ -4,7 +4,7 @@ This is **Nirmal Kumar R**. I go by the handle of _mysticmode_, _tildezero_ or j
 
 I started my professional career in IT by 2012 when I was around 20 years old dropping out of college
 for multiple reasons that is a total waste in expressing it here. I started with Front-end development,
-UI design and a quick Wireframe Prototyper with pencil and paper for clients to show what's going on in
+UI design and as a quick Wireframe Prototyper with pencil and paper for clients to show what's going on in
 my mind at that spot. The tech-stack I had knowledge at this time was HTML5, CSS3, Javascript mostly
 with jQuery and Python.
 
