@@ -19,5 +19,5 @@ coding. Adding some spices to it, mathematics which had been a mystery to me my 
 taking baby-steps here to learn linear algebra and calculus.
 
 ### Get in touch
-You can connect with me on Mastodon - [@tildezero@mastodon.social](https://mastodon.social/@tildezero). I do
-not reply to emails much.
+You can connect with me on Mastodon - [@tildezero@mastodon.social](https://mastodon.social/@tildezero). Or
+via email - tildezero [at] gmail.com
